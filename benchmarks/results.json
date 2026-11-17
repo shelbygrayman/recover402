@@ -1,0 +1,144 @@
+{
+  "environment": {
+    "os": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "java": "openjdk version \"21.0.13\" 2026-10-20 LTS",
+    "node": "v24.22.1",
+    "cpu": "",
+    "filesystem": "overlayfs"
+  },
+  "scope": "Offline fixture RPC and SIGKILL process restart. No live settlement, full SDK or financial safety benchmark.",
+  "journal_checks_and_latency": {
+    "claim_p50_us": 55.453,
+    "claim_p95_us": 108.401,
+    "checks": "passed",
+    "claim_p99_us": 164.875,
+    "note": "force(true) acknowledged writes; local filesystem only; no throughput or network claim",
+    "timed_claims": 1000
+  },
+  "api_smoke": "passed",
+  "rpc_scenarios": [
+    {
+      "scenario": "success",
+      "expected": "TRANSFER_FINALIZED",
+      "actual": "TRANSFER_FINALIZED",
+      "passed": true
+    },
+    {
+      "scenario": "missing",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "unavailable",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_chain",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "unfinalized",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "reorg",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_tx",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_token",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_payer",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_recipient",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_amount",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "removed",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "duplicate_log",
+      "expected": "UNRESOLVED",
+      "actual": "UNRESOLVED",
+      "passed": true
+    },
+    {
+      "scenario": "reverted",
+      "expected": "TRANSACTION_REVERTED",
+      "actual": "TRANSACTION_REVERTED",
+      "passed": true
+    }
+  ],
+  "crash_retention": [
+    {
+      "implementation": "naive",
+      "trials": 30,
+      "transaction_bindings_recovered": 0,
+      "restart_and_query_p50_ms": 70.91402550000001,
+      "restart_and_query_p95_ms": 104.925498
+    },
+    {
+      "implementation": "upstream_default_store",
+      "trials": 30,
+      "transaction_bindings_recovered": 0,
+      "restart_and_query_p50_ms": 68.4389865,
+      "restart_and_query_p95_ms": 86.320536
+    },
+    {
+      "implementation": "recover402",
+      "trials": 30,
+      "transaction_bindings_recovered": 30,
+      "restart_and_query_p50_ms": 57.3682605,
+      "restart_and_query_p95_ms": 74.61475
+    }
+  ],
+  "upstream": {
+    "repository": "https://github.com/x402-foundation/x402",
+    "commit": "911709c32e62641f7bd4df345b2029ebe84968c8",
+    "package_version": "2.31.0",
+    "path": "typescript/packages/core/src/facilitator/pendingSettlementStore.ts",
+    "scope": "Unmodified upstream default in-memory store only. Not a benchmark of full SDK or settlement safety."
+  },
+  "source_sha256": {
+    "src/main/java/dev/recover402/Api.java": "5129d7d6e4cd1892fef28e45b95e020e37dc6248fbefa8d944ebb61ef795c8b2",
+    "src/main/java/dev/recover402/EvmReconciler.java": "2afe28d2f8674ed02689d8795c5c29fca7522bcc718d834749d2a8269c3cdf20",
+    "src/main/java/dev/recover402/Journal.java": "40c25309c36055ca69c66858503462493ca7e41f063d00001dc3f82428819ce9",
+    "src/main/java/dev/recover402/Json.java": "e7c456fb4f2e407852b4deb7e9716da4852f45775645af5036d8af2f27aeb5df",
+    "src/main/java/dev/recover402/Main.java": "44f9aa97fd559f7aae8d4369c01ddd9c1f6d7221c29d23d423f86d5513532f63",
+    "src/test/java/dev/recover402/Checks.java": "05a2460de68b7ce02f4e521af08362c08afcd54d7aa6056f352ec8de84247735",
+    "src/test/java/dev/recover402/CrashWorker.java": "543704d04119f2950f1f6734e28361183d4f7881297088b0a5d3bd95e6a5a749"
+  }
+}
