@@ -6,6 +6,30 @@ Java 21 library, CLI and loopback HTTP sidecar for durable payment-attempt track
 
 **Status: experimental prototype.** The benchmark uses local RPC fixtures and real process kills. No live x402 settlement has been exercised. This is an application recovery building block, not a payment SDK, facilitator, or guarantee against double charging.
 
+## Replay the Base retry study
+
+Did a retry produce a second settlement for the same purchase? Run a read-only replay of PaidFor's published Base USDC experiment. Python 3.10+ is sufficient. The download below fetches a pinned public export. The replay itself runs offline.
+
+```sh
+git clone https://github.com/shelbygrayman/recover402.git
+cd recover402
+curl -fsSLo stress.json https://raw.githubusercontent.com/sarmadahsan/paidfor-data/ae6907719b9317d3f04c43fdb8733897d1536dc1/stress.json
+python3 scripts/replay_stress.py stress.json --check
+```
+
+| Experiment | Purchase intents | Two distinct settlement transactions | No attributed transaction in the export |
+| --- | ---: | ---: | ---: |
+| Back-to-back purchases for one intent | 10 | 5 | 5 |
+| Retry experiment | 10 | 5 | 5 |
+
+Across 40 calls, all 20 per-intent counts matched the publisher's reference. The script derives these counts from the call records before reading the labels. It matches each reported chain event to the call's nonce, recipient and exact USDC amount, then counts distinct transactions per intent. Repeated observations of the same transaction count once. An empty evidence list leaves the outcome unobserved. Only three first calls in the retry experiment actually aborted. These ten-resource samples describe the experiment.
+
+Use `--details` to inspect IDs and hashes, or `--benchmark` to time seven warm reads, parses and replays. On Python 3.12.14 the median with `--check` was 0.27 ms for this 45 KB input, excluding interpreter startup and download. Run `python3 scripts/test_replay_stress.py` for the offline regression suite. Exit 0 means the replay completed, including any multiple-settlement findings. Exit 2 signals invalid input or a failed reference check.
+
+The attribution comes from the published export. This replay makes no RPC calls and establishes neither chain finality nor delivery. The Java journal and reconciler below cover recovery for an application recording its own attempts.
+
+[Buyer report](https://github.com/x402-foundation/x402/issues/4367) · [Pinned input](https://github.com/sarmadahsan/paidfor-data/blob/ae6907719b9317d3f04c43fdb8733897d1536dc1/stress.json)
+
 ## The problem
 
 A facilitator broadcasts a transaction; the application crashes before it records the outcome. A fresh payment could be unnecessary, but a missing API response does not tell you whether settlement happened or the resource was delivered.
